@@ -14,25 +14,25 @@
  * }
  */
 class Solution {
-    public static int height(TreeNode root){
-        if(root==null){
-            return 0;
-        }
-        int lh=height(root.left);
-         int rh=height(root.right);
-         return Math.max(lh,rh)+1;
-    }
-   
-    public int diameterOfBinaryTree(TreeNode root) {
-        if(root == null){
-            return 0;
-        }
-        int leftdiam=diameterOfBinaryTree(root.left);
-        int rightdiam=diameterOfBinaryTree(root.right);
-        int leftht=height(root.left);
-        int rightht=height(root.right);
-        int selfdiam=leftht+rightht;
+   private int maxDiameter = 0;
 
-        return Math.max(selfdiam,Math.max(rightdiam,leftdiam));
+    public int diameterOfBinaryTree(TreeNode root) {
+        computeHeight(root);
+        return maxDiameter;
+    }
+
+    // Helper method: returns height, updates diameter
+    private int computeHeight(TreeNode node) {
+        if (node == null) return 0;
+
+        int leftHeight = computeHeight(node.left);
+        int rightHeight = computeHeight(node.right);
+
+        // Update diameter at this node
+        int diameterAtNode = leftHeight + rightHeight;
+        maxDiameter = Math.max(maxDiameter, diameterAtNode);
+
+        // Return height to parent
+        return 1 + Math.max(leftHeight, rightHeight);
     }
 }
