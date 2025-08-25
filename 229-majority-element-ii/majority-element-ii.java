@@ -3,21 +3,20 @@ class Solution {
       //  int count=0;
         int n= nums.length;
         List<Integer> ans = new ArrayList<>();
-        for(int i=0; i<nums.length; i++){
-            int count =1;
-            for(int j=i+1; j<nums.length; j++){
-                if(nums[i]==nums[j]){
-                    count++;
-                } }
-                if(count > (n/3) && !ans.contains(nums[i])){
-                 ans.add(nums[i]);
-
-                
-        
-            }
-        }
-         return ans;
        
+       HashMap<Integer,Integer> map = new HashMap<>();
+
+       for(int i=0; i<nums.length; i++){
+        map.put(nums[i], map.getOrDefault(nums[i],0)+1);
+       }
+
+       
+       for(Integer key : map.keySet()){
+        if(map.get(key)>nums.length/3){
+            ans.add(key);
+        }
+       }
+       return ans;
     }
 }
 
