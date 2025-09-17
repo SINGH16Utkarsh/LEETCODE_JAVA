@@ -1,14 +1,16 @@
 class Solution {
     public List<List<Integer>> subsets(int[] nums) {
-         List<List<Integer>> result = new ArrayList<>();
         int n = nums.length;
+        int total = 1 << n;  // 2^n subsets
         
-        int total = 1 << n; // 2^n subsets
+        List<List<Integer>> result = new ArrayList<>(total);
         
         for (int mask = 0; mask < total; mask++) {
-            List<Integer> subset = new ArrayList<>();
+            // Instead of starting with empty, estimate subset size quickly
+            int size = Integer.bitCount(mask);
+            List<Integer> subset = new ArrayList<>(size);
+            
             for (int i = 0; i < n; i++) {
-                // check if i-th bit is set
                 if ((mask & (1 << i)) != 0) {
                     subset.add(nums[i]);
                 }
