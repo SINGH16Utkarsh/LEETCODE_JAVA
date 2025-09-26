@@ -1,20 +1,22 @@
 class Solution {
     public int numberOfSubarrays(int[] nums, int k) {
-        Map<Integer, Integer> prefixCount = new HashMap<>();
-        prefixCount.put(0, 1); // empty prefix sum
-        int sum = 0, result = 0;
+   return atMost(nums, k) - atMost(nums, k - 1);
+    }
 
-        for (int num : nums) {
-            // mark 1 for odd, 0 for even
-            sum += num % 2;
+    // helper: number of subarrays with at most K odd numbers
+    private int atMost(int[] nums, int k) {
+        int left = 0, count = 0;
+        for (int right = 0; right < nums.length; right++) {
+            if (nums[right] % 2 == 1) k--; // odd number consumes one flip
 
-            // check if there is a prefix sum to form subarray with exactly k odd numbers
-            result += prefixCount.getOrDefault(sum - k, 0);
+            while (k < 0) { // shrink window if too many odds
+                if (nums[left] % 2 == 1) k++;
+                left++;
+            }
 
-            // record current prefix sum
-            prefixCount.put(sum, prefixCount.getOrDefault(sum, 0) + 1);
+            // all subarrays ending at right with at most k odds
+            count += right - left + 1;
         }
-
-        return result;
+        return count;
     }
 }
